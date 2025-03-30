@@ -1,6 +1,6 @@
 # FastAPI Concurrency Example
 
-This project demonstrates the usage of FastAPI with asynchronous endpoints and concurrency handling.
+This project demonstrates different types of concurrency handling in FastAPI applications.
 
 ## Project Structure
 
@@ -74,17 +74,80 @@ uvicorn main:app --host 0.0.0.0 --port 8080 --workers 4 --reload
 
 ## API Endpoints
 
-### GET /1
-- A test endpoint that simulates a long-running operation
-- Uses `time.sleep(10)` to demonstrate blocking behavior
-- Prints "Hello" at the start and "Bye" after completion
+### 1. Blocking Endpoint (`/1`)
+- Demonstrates blocking I/O operations using `time.sleep()`
+- Blocks the entire server for 10 seconds
+- Sequential execution
+- Not recommended for production use
 
-## Understanding the Code
+### 2. Non-Blocking Endpoint (`/2`)
+- Demonstrates non-blocking I/O operations using `asyncio.sleep()`
+- Allows other requests to be processed while waiting
+- Concurrent execution
+- Recommended for production use
+- Uses FastAPI's async capabilities
 
-The main application (`main.py`) demonstrates:
-- Basic FastAPI setup
-- Async endpoint definition
-- Simulated long-running operations
+### 3. Threaded Endpoint (`/3`)
+- Demonstrates synchronous execution in a separate thread
+- Blocks only the current request, not the entire server
+- Each request runs in its own thread
+- Useful for CPU-bound operations
+- Note: Threading has overhead and is not recommended for I/O-bound operations
+
+## Accessing the API Documentation
+
+1. Swagger UI: http://localhost:8000/docs
+2. ReDoc: http://localhost:8000/redoc
+
+## Testing the Endpoints
+
+1. Blocking Endpoint (`/1`):
+```bash
+curl http://localhost:8000/1
+```
+- This will block the server for 10 seconds
+- Other requests will be queued
+
+2. Non-Blocking Endpoint (`/2`):
+```bash
+curl http://localhost:8000/2
+```
+- This will not block the server
+- Other requests can be processed while waiting
+
+3. Threaded Endpoint (`/3`):
+```bash
+curl http://localhost:8000/3
+```
+- This will block only the current request
+- Other requests can be processed in separate threads
+
+## Understanding the Differences
+
+1. **Blocking Endpoint (`/1`)**:
+   - Uses `time.sleep()`
+   - Blocks the entire event loop
+   - Sequential execution
+   - Not suitable for production
+
+2. **Non-Blocking Endpoint (`/2`)**:
+   - Uses `asyncio.sleep()`
+   - Yields control back to the event loop
+   - Concurrent execution
+   - Best for I/O-bound operations
+
+3. **Threaded Endpoint (`/3`)**:
+   - Uses synchronous code in a separate thread
+   - Each request gets its own thread
+   - Useful for CPU-bound operations
+   - Has thread management overhead
+
+## Best Practices
+
+1. Use async/await for I/O-bound operations
+2. Use threading for CPU-bound operations
+3. Avoid blocking operations in async endpoints
+4. Consider using background tasks for long-running operations
 
 ## Development Notes
 
