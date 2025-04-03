@@ -53,7 +53,7 @@ async def endpoint2(): # Processed Concurrently
 
 
 ##
-# Runs in seperate Threads
+# Runs in seperate Threads like asyncio.sleep
 ##
 # Demo endpoint 3
 @app.get("/3")
