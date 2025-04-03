@@ -45,10 +45,10 @@ async def endpoint1(): # Processed Sequentially
 ###
 @app.get("/2")
 async def endpoint2(): # Processed Concurrently
-    print("Hello")
+    print("Hello from endpoint 2")
     await asyncio.sleep(10) # Non Blocking I/O operation, awaited,
     # Function execution paused
-    print("Bye")
+    print("Bye from endpoint 2")
     return {"status": "Operation completed successfully"}
 
 

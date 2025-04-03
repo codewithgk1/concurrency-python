@@ -114,6 +114,7 @@ curl http://localhost:8000/2
 ```
 - This will not block the server
 - Other requests can be processed while waiting
+- **Important Note**: When testing the non-blocking behavior locally, use two different browsers to make the API calls. Many browsers use HTTP keep-alive connections, which might not demonstrate the true asynchronous behavior when using the same browser or connection.
 
 3. Threaded Endpoint (`/3`):
 ```bash
